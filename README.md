@@ -5,7 +5,7 @@ dtControl: https://dtcontrol.model.in.tum.de/
 
 Need to adjust paths of files and folders.
 
-Compile the mex functions.
+Compile the mex functions in: SCOTSv0.2/mfiles/mexfiles/
 
 Unwheel the dtControl .whl file.
 
