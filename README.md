@@ -7,6 +7,6 @@ Need to adjust paths of files and folders.
 
 Compile the mex functions in: SCOTSv0.2/mfiles/mexfiles/
 
-Unwheel the dtControl .whl file.
+In the folder 'dtControl': run the makefile.
 
 Linear 2 dimensional example: SCOTSv0.2/examples/linearTwoD_v2/
