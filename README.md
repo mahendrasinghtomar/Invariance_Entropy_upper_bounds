@@ -15,9 +15,7 @@ In the folder 'dtControl': run the makefile.
 
 # Examples
 
-Linear 2 dimensional example: 
-
-	Go to the folder: SCOTSv0.2/examples/linearTwoD_v2/
+Go to a folder in: SCOTSv0.2/examples/
 	
-	Execute the makefile
+	Execute makefile of the selected example folder.
 
