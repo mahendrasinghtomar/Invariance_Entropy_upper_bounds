@@ -5,7 +5,7 @@ C_METHOD = cart
 DETERMINIZER = maxfreq
 MINPOST = 0
 
-BOOSTINC        = -I/mnt/c/Users/mahen/StorageLocal/boost_1_72_0/
+BOOSTINC        = -I/AdjustPath/boost_1_72_0/
 MATLAB = "/mnt/c/Program Files/MATLAB/R2019b/bin/matlab.exe"
 #$$$$ end Adjust $$$$#
 #--------------------------------------------------------------------#
@@ -62,15 +62,6 @@ $(TARGET)_Run2: $(TARGET).cc
 clean:
 	rm $(TARGET)
 	
-dtcSetupVirtualEnv_linux:
-	virtualenv -p python3 /mnt/c/Users/mahen/StorageLocal/dtcontrol-venv
-
-VEnvActivateRunDtc_linux:
-	(\
-	  . /AdjustPath/dtcontrol-venv/bin/activate; \
-	  dtcontrol -i $(DTCONTROLREP)/dcdc.scs -m cart -d $(DETERMINIZER) -t 60m --artifact # MaxFreq; \
-	)
-
 dtcClean:
 	-rm benchmark.html benchmark.json $(DTCONTROLREP)/dcdc.scs plot.png
 
