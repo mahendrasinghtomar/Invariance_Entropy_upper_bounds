@@ -13,8 +13,9 @@ Compile the mex function 'comp_hgtm_dtControl': In MATLAB open the folder SCOTSv
 
 In the folder 'dtControl': run the makefile.
 
-Need to adjust paths of files and folders.
-
 # Examples
 
-Linear 2 dimensional example: SCOTSv0.2/examples/linearTwoD_v2/
+Linear 2 dimensional example: 
+	Go to the folder: SCOTSv0.2/examples/linearTwoD_v2/
+	Execute the makefile
+
