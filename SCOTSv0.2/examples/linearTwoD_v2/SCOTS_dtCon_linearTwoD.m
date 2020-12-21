@@ -4,7 +4,7 @@ profile clear
 profile('-memory','on')
 profile on
 
-addpath(genpath('C:/Users/AdjustPath/SCOTSv0.2/src2'))
+addpath(genpath('../../mfiles/mexfiles'))
 
 Example = 'DataMatlab';
 fileID = fopen(strcat(Example,'/S_dtCon_B_labels.txt'),'r');

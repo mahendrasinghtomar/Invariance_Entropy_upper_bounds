@@ -7,13 +7,13 @@ dtControl from: https://dtcontrol.model.in.tum.de/
 
 Download Boost library: https://sourceforge.net/projects/boost/files/boost/1.72.0/
 
-Need to adjust paths of files and folders.
-
 Compile the mex function 'comp_hgtm_dtControl': In MATLAB open the folder SCOTSv0.2/mfiles/mexfiles/. Then execute:
 	
 	mex -R2018a COPTIMFLAGS="-O3 -Oy- -DNDEBUG" comp_hgtm_dtControl.c
 
 In the folder 'dtControl': run the makefile.
+
+Need to adjust paths of files and folders.
 
 # Examples
 

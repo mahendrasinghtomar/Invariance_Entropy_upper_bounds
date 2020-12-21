@@ -15,7 +15,7 @@
 /* time profiling */
 #include "TicToc.hh"
 
-std::string MATLABDIR = "/mnt/c/Users/AdjustPath/SCOTSv0.2/examples/linearTwoD_v2/";
+std::string MATLABDIR = "";
 
     /* memory profiling */
     #include <sys/time.h>
