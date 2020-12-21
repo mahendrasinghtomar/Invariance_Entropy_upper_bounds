@@ -17,5 +17,5 @@ In the folder 'dtControl': run the makefile.
 
 Go to a folder in: SCOTSv0.2/examples/
 	
-	Execute the makefile in the selected example folder.
+	Execute the makefile in the selected example folder. 
 
