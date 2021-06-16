@@ -1,9 +1,5 @@
 /*
-* 09 March 2021: To check for all time controlled invariance
-*
-* Float in place of decimal. Will it resolve the error with dtControl(with float) for logreg+maxfreq?
-* => Yes, for the hyperbolic example.
-* 
+*  
 *with DTCONTROL = 0:
 *	Controller determinised with minPosts control selection.
 *       (first such input selected for which no. of posts is minimum)
@@ -17,7 +13,7 @@
 *with SCOTS_FOCUS_ONLY_INTERSECTION = 1
 *	avoid set defined as the set X\domain_intersection.
 * 
-*Longer control input length
+*
 */
 
 #if (RUN_INDEX == 2)
@@ -40,16 +36,16 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 std::string OSname = "Windows environment";
-std::string MATLABDIR = "C:/Users/mahen/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/examples/";
+std::string MATLABDIR = "C:/Users/..../SCOTSv0.2/examples/";
 #define NOTVISUALSTUDIO 0
 #elif __APPLE__
 std::string OSname = "Apple Mac";
 // Mac
-std::string MATLABDIR = "/Users/mst/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/examples/";
+std::string MATLABDIR = "/Users/..../SCOTSv0.2/examples/";
 #define NOTVISUALSTUDIO 1
 #elif __linux__
 std::string OSname = "Linux environment";
-std::string MATLABDIR = "/mnt/c/Users/mahen/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/examples/";
+std::string MATLABDIR = "/mnt/c/Users/..../SCOTSv0.2/examples/";
 #define NOTVISUALSTUDIO 1
 #else
     // unknown compiler

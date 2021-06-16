@@ -5,10 +5,10 @@ profile('-memory','on')
 profile on
 
 %win10
-addpath(genpath('C:/Users/mahen/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/src2'))
+addpath(genpath('C:/Users/..../SCOTSv0.2/src2'))
 
 %Mac
-addpath(genpath('/Users/mst/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/src2'))
+addpath(genpath('/Users/..../SCOTSv0.2/src2'))
 
 Example = 'DataMatlab';
 fileID = fopen(strcat(Example,'/S_dtCon_B_labels.txt'),'r');

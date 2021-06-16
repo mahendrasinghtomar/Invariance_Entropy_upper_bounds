@@ -20,16 +20,16 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 std::string OSname = "Windows environment";
-std::string MATLABDIR = "C:/Users/mahen/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/examples/";
+std::string MATLABDIR = "C:/Users/..../SCOTSv0.2/examples/";
 #define NOTVISUALSTUDIO 0
 #elif __APPLE__
 std::string OSname = "Apple Mac";
 // Mac
-std::string MATLABDIR = "/Users/mst/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/examples/";
+std::string MATLABDIR = "/Users/..../SCOTSv0.2/examples/";
 #define NOTVISUALSTUDIO 1
 #elif __linux__
 std::string OSname = "Linux environment";
-std::string MATLABDIR = "/mnt/c/Users/mahen/GoogleDrive/Currently_working_on_these/lyf_MST_documents/lyf_pc_mac/cpp_packages/SCOTSv0.2/examples/";
+std::string MATLABDIR = "/mnt/c/Users/..../SCOTSv0.2/examples/";
 #define NOTVISUALSTUDIO 1
 #else
     // unknown compiler
