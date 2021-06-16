@@ -93,8 +93,10 @@ public:
               m_z(new double[state_alphabet.get_dim()]()) {
   /* default value of the measurement error 
      * (heurisitc to prevent rounding errors)*/
-    for(int i=0; i<m_state_alphabet.get_dim(); i++)
-      m_z[i]=m_state_alphabet.get_eta()[i]/1e10;
+      for (int i = 0; i < m_state_alphabet.get_dim(); i++)
+           m_z[i]=m_state_alphabet.get_eta()[i]/1e10;     // MST commented 09 April 2021
+          //m_z[i] = 0;                                       // MST added 09 April 2021
+         // m_z[i] = m_state_alphabet.get_eta()[i] / 1e5;                                    // MST added 09 April 2021
   }
 
   /** 
@@ -200,7 +202,8 @@ public:
         m_input_alphabet.itox(j,u);
         /* integrate system and radius growth bound */
         /* the result is stored in x and r */
-        radius_post(r,x,u);
+        //radius_post(r,x,u, 1);  // MST added 1 on 14 April 2021. The argument 1 indicates that control sequences of longer lengths are being used, and invariance with each of the sequence element is to be checked.
+        radius_post(r, x, u);
         system_post(x,u);
         /* determine the cells which intersect with the attainable set: 
          * discrete hyper interval of cell indices 
@@ -210,13 +213,15 @@ public:
         abs_type npost=1;
         for(int k=0; k<dim; k++) {
           /* check for out of bounds */
-          double left = x[k]-r[k]-m_z[k];
+          double left = x[k]-r[k]-m_z[k];   // MST commented on 12 April 2021
           double right = x[k]+r[k]+m_z[k];
-          if(left <= lower_left[k]-eta[k]/2.0  || right >= upper_right[k]+eta[k]/2.0)  {
+          //double left = x[k] - r[k] - m_z[k] + 1e-8;   // MST added on 12 April 2021
+          //double right = x[k] + r[k] + m_z[k] - 1e-8;  // MST added on 12 April 2021
+          if(left <= lower_left[k]-eta[k]/2.0  || right >= upper_right[k]+eta[k]/2.0)  {   // MST commented on 12 April 2021
+          //if (left + (1e-8) <= lower_left[k] - eta[k] / 2.0 || right - (1e-8) >= upper_right[k] + eta[k] / 2.0) {     //MST added on 12 April 2021
             out_of_domain[i*M+j]=true;
             break;
           } 
-
           /* integer coordinate of lower left corner of post */
           lb[k] = static_cast<abs_type>((left-lower_left[k]+eta[k]/2.0)/eta[k]);
           /* integer coordinate of upper right corner of post */
@@ -556,6 +561,8 @@ public:
 					std::vector<int>& B_labels,
                     classifyFuncType classify,
                     F3& avoid=params::avoid_abs) {
+        // Bi updated to store the post states (with indexes as per the location in Bpartition; in range 0 to Bsize-1). 
+        // For indexes of post states same as the SCOTS grid see compute_BiBjBlabels_b().
       /* number of cells */
       abs_type N=m_state_alphabet.size();
       /* number of inputs */
@@ -627,8 +634,10 @@ public:
           abs_type npost=1;
           for(int k=0; k<dim; k++) {
             /* check for out of bounds */
-            double left = x[k]-r[k]-m_z[k];
+            double left = x[k]-r[k]-m_z[k];   // MST commented on 12 April 2021
             double right = x[k]+r[k]+m_z[k];
+              //double left = x[k] - r[k] - m_z[k] + 1e-8;   // MST added on 12 April 2021
+              //double right = x[k] + r[k] + m_z[k] - 1e-8;  // MST added on 12 April 2021
             // if(left <= lower_left[k]-eta[k]/2.0  || right >= upper_right[k]+eta[k]/2.0)  {
               // out_of_domain[i*M+j]=true;
               // break;
@@ -668,12 +677,146 @@ public:
                 std::cout << "\nError: Post of the box " << i << " of the dtControl Partition went outside the invariant domain\n\n"; 
                 return false; }
             auto index = std::distance(Bpartition.begin(), it);
-			Bi[i].push_back(index);
+			Bi[i].push_back(index); // 
           }
         }
         progress(i,Bsize,counter);
       }
        return true;
+    }
+
+    template<class F1, class F2, class F3 = decltype(params::avoid_abs)>
+    bool compute_BiBjBlabels_b(TransitionFunction& transition_function,
+        F1& system_post,
+        F2& radius_post,
+        std::vector<abs_type>& Bpartition,
+        const scots::abs_type& Bsize,
+        std::vector<std::vector<abs_type>>& Xj,
+        std::vector<int>& B_labels,
+        classifyFuncType classify,
+        F3& avoid = params::avoid_abs) {
+        // /*Xj: updated to store the post states (with indexes same as the SCOTS grid)*/
+        /* number of cells */
+        abs_type N = m_state_alphabet.size();
+        /* number of inputs */
+        abs_type M = m_input_alphabet.size();
+        /* number of transitions (to be computed) */
+        abs_ptr_type T = 0;
+        /* state space dimension */
+        int dim = m_state_alphabet.get_dim();
+        /* for display purpose */
+        abs_type counter = 0;
+        /* some grid information */
+        std::vector<abs_type> NN = m_state_alphabet.get_nn();
+        /* variables for managing the post */
+        std::vector<abs_type> lb(dim);  /* lower-left corner */
+        std::vector<abs_type> ub(dim);  /* upper-right corner */
+        std::vector<abs_type> no(dim);  /* number of cells per dim */
+        std::vector<abs_type> cc(dim);  /* coordinate of current cell in the post */
+        /* radius of hyper interval containing the attainable set */
+        state_type eta;
+        state_type r;
+        /* state and input variables */
+        state_type x;
+        input_type u;
+        /* for out of bounds check */
+        state_type lower_left;
+        state_type upper_right;
+        /* copy data from m_state_alphabet */
+        for (int i = 0; i < dim; i++) {
+            eta[i] = m_state_alphabet.get_eta()[i];
+            lower_left[i] = m_state_alphabet.get_lower_left()[i];
+            upper_right[i] = m_state_alphabet.get_upper_right()[i];
+        }
+        /* init in transition_function the members no_pre, no_post, pre_ptr */
+        //transition_function.init_infrastructure(N,M);
+        /* lower-left & upper-right corners of hyper rectangle of cells that cover attainable set */
+        std::unique_ptr<abs_type[]> corner_IDs(new abs_type[N * M * 2]());
+        /* is post of (i,j) out of domain ? */
+        std::unique_ptr<bool[]> out_of_domain(new bool[N * M]());
+        /*
+         * first loop: compute corner_IDs:
+         * corner_IDs[i*M+j][0] = lower-left cell index of over-approximation of attainable set
+         * corner_IDs[i*M+j][1] = upper-right cell index of over-approximation of attainable set
+         */
+         /* loop over all cells in Bpartition*/
+        for (abs_type i = 0; i < Bsize; i++) {
+            /* loop over all inputs */
+             // for(abs_type j=0; j<M; j++) 
+            {
+                //          out_of_domain[i*M+j]=false;
+                          /* get center x of cell */
+                m_state_alphabet.itox(Bpartition[i], x);
+                classify(x, u, B_labels[i]);
+                /* cell radius (including measurement errors) */
+                for (int k = 0; k < dim; k++)
+                    r[k] = eta[k] / 2.0 + m_z[k];
+                /* current input */
+                // m_input_alphabet.itox(j,u);
+                /* integrate system and radius growth bound */
+                /* the result is stored in x and r */
+
+                radius_post(r, x, u);
+                system_post(x, u);
+
+                /* determine the cells which intersect with the attainable set:
+                 * discrete hyper interval of cell indices
+                 * [lb[0]; ub[0]] x .... x [lb[dim-1]; ub[dim-1]]
+                 * covers attainable set
+                 */
+                abs_type npost = 1;
+                for (int k = 0; k < dim; k++) {
+                    /* check for out of bounds */
+                    double left = x[k] - r[k] - m_z[k];   // MST commented on 12 April 2021
+                    double right = x[k] + r[k] + m_z[k];
+                    //double left = x[k] - r[k] - m_z[k] + 1e-8;   // MST added on 12 April 2021
+                    //double right = x[k] + r[k] + m_z[k] - 1e-8;  // MST added on 12 April 2021
+                  // if(left <= lower_left[k]-eta[k]/2.0  || right >= upper_right[k]+eta[k]/2.0)  {
+                    // out_of_domain[i*M+j]=true;
+                    // break;
+                  // }
+
+                  /* integer coordinate of lower left corner of post */
+                    lb[k] = static_cast<abs_type>((left - lower_left[k] + eta[k] / 2.0) / eta[k]);
+                    /* integer coordinate of upper right corner of post */
+                    ub[k] = static_cast<abs_type>((right - lower_left[k] + eta[k] / 2.0) / eta[k]);
+                    /* number of grid points in the post in each dimension */
+                    no[k] = (ub[k] - lb[k] + 1);
+                    /* total number of post */
+                    npost *= no[k];
+                    cc[k] = 0;
+                }
+                // corner_IDs[i*(2*M)+2*j]=0;
+                // corner_IDs[i*(2*M)+2*j+1]=0;
+                // if(out_of_domain[i*M+j])
+                  // continue;
+                // std::vector<scots::abs_type> Bj(npost);
+
+                /* compute indices of post */
+                for (abs_type k = 0; k < npost; k++) {
+                    abs_type q = 0;
+                    for (int l = 0; l < dim; l++)
+                        q += (lb[l] + cc[l]) * NN[l];
+                    cc[0]++;
+                    for (int l = 0; l < dim - 1; l++) {
+                        if (cc[l] == no[l]) {
+                            cc[l] = 0;
+                            cc[l + 1]++;
+                        }
+                    }
+                    /* (i,j,q) is a transition */
+                    /*std::vector<scots::abs_type>::iterator it = std::find(Bpartition.begin(), Bpartition.end(), q);
+                    if (it == Bpartition.end()) {
+                        std::cout << "\nError: Post of the box " << i << " of the dtControl Partition went outside the invariant domain\n\n";
+                        return false;
+                    }
+                    auto index = std::distance(Bpartition.begin(), it);*/
+                    Xj[i].push_back(q);
+                }
+            }
+            progress(i, Bsize, counter);
+        }
+        return true;
     }
 	
 	template<class F1, class F2, class F4, class F3=decltype(params::avoid_abs)>

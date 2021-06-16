@@ -85,6 +85,31 @@ bool constructDirectedGraph(const std::vector<std::vector<scots::abs_type>>& Xj,
     return true;
 }
 
+bool constructDirectedGraph_b(const std::vector<std::vector<scots::abs_type>>& Xj, const std::vector<int>& B_NPosts, const std::vector<scots::abs_type>& Bpartition, Graph& g, std::unique_ptr<double[]>& edge_weights, const scots::abs_type& num_edges) {
+    /*Constructs directed graph.*/
+    int num_vertices = Bpartition.size();
+    /*int num_edges = 0;
+    for (const auto& e : B_NPosts)
+        num_edges += e;*/
+    //double* edge_weights = new double[num_edges];
+
+    typedef std::pair<scots::abs_type, scots::abs_type> Edge;
+    Edge* edge_array = new Edge[num_edges];
+    scots::abs_type count = 0;
+    for (scots::abs_type i = 0; i < Xj.size(); i++) {
+        for (scots::abs_type j = 0; j < Xj[i].size(); j++) {
+            edge_array[count] = Edge(Bpartition[i], Xj[i][j]);
+            //edge_weights[count] = std::log2(B_NPosts[i]);
+            count++;
+        }
+    }
+    g = Graph(edge_array, edge_array + num_edges, edge_weights.get(), num_vertices);
+
+    //delete[] edge_weights;
+    delete[] edge_array;
+    return true;
+}
+
 void print_max_cycle_mean(Graph& g) {
     boost::property_map< Graph, boost::edge_weight_t >::type ewm
         = boost::get(boost::edge_weight, g);
