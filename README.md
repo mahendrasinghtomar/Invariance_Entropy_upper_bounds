@@ -7,6 +7,8 @@ dtControl from: https://dtcontrol.model.in.tum.de/
 
 Download Boost library: https://sourceforge.net/projects/boost/files/boost/1.72.0/
 
+Download LEMON Graph Library: http://lemon.cs.elte.hu/trac/lemon/wiki/Downloads
+
 Compile the mex function 'comp_hgtm_dtControl': In MATLAB open the folder SCOTSv0.2/mfiles/mexfiles/. Then execute:
 	
 	mex -R2018a COPTIMFLAGS="-O3 -Oy- -DNDEBUG" comp_hgtm_dtControl.c

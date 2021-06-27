@@ -47,48 +47,4 @@ wmax = log2(max(max_scc_i_NPosts))
     
 
 
-%profile viewer
-
-%%
-% % i=10
-% % SCCnodes = find(bins == i); %nodes in the scc
-% % SCC_B_labels = B_labels(SCCnodes);
-% % SCC_B = B(SCCnodes,SCCnodes);
-% % nnzero = nnz(SCC_B)  % number of nonzero elements in the sparse matrix
-% % SCC_G = digraph(SCC_B);
-% % figure(2)
-% % plot(SCC_G)
-% 
-% lev = zeros(Nscc,1);
-% Thn = zeros(Nscc,1);
-% tic;
-% for i=1:Nscc
-%     i ;
-%     SCCnodes = find(bins == i); %nodes in the scc
-%     SCC_B_labels = B_labels(SCCnodes);
-%     SCC_B = B(SCCnodes,SCCnodes);
-%     if ~(nnz(SCC_B) == 0)   % nnz(): number of nonzero elements in the sparse matrix
-%         SCC_dtC_Npartitions = length(unique(SCC_B_labels)); % SCC number of dtControl partitions
-%         SCC_dtC_partitions = unique(SCC_B_labels);
-% %/        comp_hgtm_dtControl takes transpose of SCC_B /%
-%         R = comp_hgtm_dtControl(SCC_dtC_Npartitions, SCC_B_labels, SCC_B', SCC_dtC_partitions)
-%         lev(i,1) = eigs(R,1);   %eigenvalue with largest magnitude
-%         if isnan(lev(i,1))
-%             lev(i,1) = max(abs(eigs(R)));
-%             if isnan(lev(i,1))
-%                 lev(i,1) = max(abs(eig(full(R))));
-%             end
-%         end
-%         hn(i,1) = log2(lev(i,1));
-%     end
-% end
-% toc
-% % lev
-% % hn
-% dtcNpartitions = length(unique(B_labels))
-% Thn = log2(max(lev))
-%%
-
-%profile viewer
-
 
