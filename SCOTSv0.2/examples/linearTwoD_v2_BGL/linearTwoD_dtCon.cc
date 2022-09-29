@@ -55,7 +55,7 @@ auto system_post = [](state_type &x, const input_type &u) noexcept {
 };
 
 auto radius_post = [](state_type &r, const state_type&, const input_type &u) noexcept {
-    /* the ode for the growth bound */
+    /* the growth bound */
     state_type zz=r;
     r[0]=2*zz[0];
     r[1]=0.5*zz[1];
