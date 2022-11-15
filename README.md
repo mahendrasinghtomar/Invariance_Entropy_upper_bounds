@@ -21,3 +21,8 @@ Go to a folder in: SCOTSv0.2/examples/
 	
 	Execute the makefile in the selected example folder. 
 
+# Publication
+
+https://www.sciencedirect.com/science/article/abs/pii/S0167691122001724
+
+Mahendra Singh Tomar, C. Kawan, and M. Zamani, ``Numerical over-approximation of invariance entropy via finite abstractions" Systems \& Control Letters, vol.170,pp.105395,2022
