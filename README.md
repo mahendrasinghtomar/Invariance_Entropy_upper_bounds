@@ -1,7 +1,8 @@
 # Invariance_Entropy_upper_bounds
-SCOTS from: https://gitlab.lrz.de/matthias/SCOTSv0.2 
+Requires [SCOTSv0.2](https://github.com/mahendrasinghtomar/Invariance_Entropy_upper_bounds/tree/main/SCOTSv0.2) and [dtControl](https://dtcontrol.model.in.tum.de/); copy of both of them is provided here.
 
-dtControl from: https://dtcontrol.model.in.tum.de/
+
+
 
 # Setup:
 
